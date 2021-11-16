@@ -1,0 +1,269 @@
+<!-- Novel Updater -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="size=device-width, initial-scale=1,viewport-fit=cover"/>
+    <title>
+      ShortcutsPro Updater
+    </title>
+    <style>
+      @charset: utf-8;
+/*  Root Variables. */
+      :root {
+        --dark: #000007;
+        --light: #fffff7;
+        --dark-blue: midnightblue;
+        --light-blue: powderblue;
+        --dark-red: darkred;
+        --light-red: red;
+        --yellow: yellow;
+        --weight: 900;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --background: var(--light);
+          --color: var(--dark);
+          --red: darkred;
+          --flash: red;
+          --blue: blue;
+          --weight: 900;
+          --border: var(--dark-blue);
+          --title: var(--dark-blue);
+          --link: darkred;
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background: var(--dark);
+          --color: var(--light);
+          --red: red;
+          --flash: yellow;
+          --blue: var(--light-blue);
+          --weight: 90;
+          --border: var(--light-blue);
+          --title: var(--light-blue);
+          --link: var(--light-red);
+        }
+      }
+/* Clear Default Settings. */
+      *,*::before,*::after {
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+      }
+      
+/*. Basic CSS Options. */
+      html { 
+/*                                             *
+        font-family: Helvetica, Arial, Freesans, clean, sans-serif; 
+/*.                                            *
+        font-family: -apple-system;
+/*                                             *
+        font-family: 'Acme', sans-serif;
+/*                                             *
+        font-family: Verdana, Geneva, sans-serif;
+/*                                             */
+        font-family: 'Times New Roman', serif;
+/* */
+        font-size:100%;
+      }     
+      body {
+        margin: 0;
+        width: 100%;
+        background:var(--background);
+        color: var(--color);
+        padding: 5%;
+        font-weight: var(--weight);
+
+      }
+      img {
+        display: block;
+        max-width: 90%;
+        object-fit: cover;
+      }
+      img.icon {
+         max-width: 70px;
+         border: 1px solid white;
+         border-radius: 9px;
+      }
+      table, td, tr, th {border: none;}
+      td {padding:2px; text-align:center;}
+      
+/*. Type Formatting. */
+      h1, h2, h3, h4, {
+        text-align: center;
+        font-weight: var(--weight);
+        margin: 0 1ex 0 1ex;
+      }
+      h1 {font-size:2em; color:var(--title)} 
+      h2 {font-size:1.5em;}
+      h3 {font-size:1em;} 
+
+/*. CSS Animations. */
+      hr {
+        width:100%;
+        margin: 0 1ex 0 1ex;
+        border: 2px solid var(--border);
+        animation-name: horizontalRule;
+        animation-direction:  alternate;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        animation-duration: 5s;
+      } 
+      @keyframes horizontalRule {0% {width:20%;}}
+
+      a {
+        color: var(--link); 
+        animation-name: linkFlash;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+      } 
+      @keyframes linkFlash {
+        45%  {color:var(--red);}
+        55%  {color:var(--flash);}
+        60%  {color:var(--red);}
+        40%  {color:var(--blue);} 
+      }
+
+/*. Responsive Adjustments. */
+      @media (max-device-width: 480px) {
+        body { margin:auto; max-width:100%;
+        } 
+      @media (min-device-width: 481px) { 
+        body {margin:auto; max-width:600px;}
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      (function(window, document) {
+//////////////////////////////////////////////////////////////////////
+//
+//                Ludicrous⠀|⠀𝘽𝙪𝙨𝙩𝙡.•io
+//.      a simple—and qquick—updater for iOS Shortcuts
+//
+//
+      // Hide body until we're done fiddling with the DOM
+        document.body.style.display = 'none';
+        
+      // Novel Updater
+      //
+        const Q = new URL(window.location.href).searchParams;
+  
+        function check(a, b) { 
+          if (a != b) return true;  
+          return false; 
+        }
+  
+        function parseId(id) {
+          let url = '';
+          if (id.split('-')[1] != undefined) {
+            url = 'https://Cutz.Bustl.io/library/versions/latest/'+id+'.json';
+          } else {
+            url = 'https://RoutineHub.co/api/v1/shortcuts/'+id+'/versions/latest';
+          }
+          console.log(url)
+          return url
+        }
+  
+        function API(id, v) {
+          let api = new XMLHttpRequest()
+          api.open('GET', parseId(id), false)
+          api.send()
+
+          let response = api.responseText
+          console.log(response)
+
+          if (response != undefined && response != null) {
+            response = JSON.parse(response);
+            let ver = response.version || response.Version;
+
+            if (check(v, ver)) {
+              return response
+            }
+          }
+            return false
+         }
+  
+        function formatData(d) {
+          if (!d) return false
+          let data = {
+            'version': d.version || d.Version,
+            'name':  d.name || Q.get('n'),
+            'notes': d.notes || d.Notes,
+            'link': d.link || `https://routinehub.co/download/${d.id}`,
+            'depict': d.depiction || `https://RoutineHub.co/shortcut/${d.id}/`
+          }
+            return data
+        }
+  
+        function update(id, v) {
+          const d = formatData(API(id, v))
+          console.log(d)
+
+          if (!d) return '';
+          return `
+  <div>
+    <center style="width:100%;">
+      <div style="max-width:480px;">
+        <br />
+        <hr class='animate' />
+        <br />
+        <h1>
+          An Update Is Available
+        </h1>
+         <!-- <img class="icon" src="${d.icon}" /> -->
+        <br />
+        <h2 style="letter-spacing:0.2ex;font-style:normal;">
+          <span>
+            ${d.name} 
+          </span>
+          <br />
+          <span>
+              v${v} → v${d.version}
+          </span>
+        </h2>
+        <br />
+        <h3>
+          ${d.notes}
+        </h3>
+        <br />
+        <br />
+        <h2>
+          <a onclick="window.open('${d.link}');window.close()">
+            Click [Here] To REPLACE
+          </a>
+        </h2>
+        <br />
+        <br />
+        <hr class='animate' />
+        <br />
+<!--        <iframe width="90%" height="640" border="none" src="${d.depict}"hidden></iframe> -->
+        <table>
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+              <a href="about:blank">
+                ShortcutsPro
+              </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </center>
+  </div>`
+        }
+        const div = document.createElement('div')
+        div.innerHTML = update('9083', '1.1')
+        //div.innerHTML = update(Q.get('id'), Q.get('v'))
+        document.body.appendChild(div)
+        
+        // All done - show body
+        document.body.style.display = '';
+      
+      })(window, document);
+    </script>
+  </body>
+</html>
