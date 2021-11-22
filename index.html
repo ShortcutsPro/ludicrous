@@ -69,11 +69,11 @@
         font-size:100%;
       }     
       body {
-        margin: 0;
+        margin: auto;
         width: 100%;
         background:var(--background);
         color: var(--color);
-        padding: 5%;
+        padding: 5px;
         font-weight: var(--weight);
 
       }
@@ -94,7 +94,7 @@
       h1, h2, h3, h4, {
         text-align: center;
         font-weight: var(--weight);
-        margin: 0 1ex 0 1ex;
+        margin: 1em;
       }
       h1 {font-size:2em; color:var(--title)} 
       h2 {font-size:1.5em;}
@@ -103,7 +103,7 @@
 /*. CSS Animations. */
       hr {
         width:100%;
-        margin: 0 1ex 0 1ex;
+        margin: 1.5em 0;
         border: 2px solid var(--border);
         animation-name: horizontalRule;
         animation-direction:  alternate;
@@ -193,23 +193,24 @@
             'name':  d.name || Q.get('n'),
             'notes': d.notes || d.Notes,
             'link': d.link || `https://routinehub.co/download/${d.id}`,
-            'depict': d.depiction || `https://RoutineHub.co/shortcut/${d.id}/`
+            'depict': d.depiction || null
           }
             return data
         }
   
         function update(id, v) {
           const d = formatData(API(id, v))
+          
+          if (d.depict === null) {
+            d.depict = `https://routinehub.co/shortcut/${id}/`
+          }
           console.log(d)
-
           if (!d) return '';
           return `
   <div>
     <center style="width:100%;">
       <div style="max-width:480px;">
-        <br />
         <hr class='animate' />
-        <br />
         <h1>
           An Update Is Available
         </h1>
@@ -235,11 +236,9 @@
             Click [Here] To REPLACE
           </a>
         </h2>
-        <br />
-        <br />
         <hr class='animate' />
         <br />
-<!--        <iframe width="90%" height="640" border="none" src="${d.depict}"hidden></iframe> -->
+        <iframe width="90%" height="540" border="none" src="${d.depict}" sandbox></iframe> 
         <table>
           <tr>
             <td></td>
@@ -256,7 +255,12 @@
   </div>`
         }
         const div = document.createElement('div')
-        // div.innerHTML = update('9083', '1.1')
+               // Testing RoutineHub
+        // div.innerHTML = update('10547', '1')
+               // Testing Bustl.Cutz
+        // div.innerHTML = update('E6CE9CFC-B0AE-4B8B-9810-6229C86B3EF5', '1')
+
+                // Update check input via URL params.
         div.innerHTML = update(Q.get('id'), Q.get('v'))
         document.body.appendChild(div)
         
