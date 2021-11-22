@@ -136,6 +136,7 @@
     </style>
   </head>
   <body>
+<!-- div area -->
     <script>
       (function(window, document) {
 //////////////////////////////////////////////////////////////////////
@@ -175,7 +176,7 @@
           let response = api.responseText
           console.log(response)
 
-          if (response != undefined && response != null) {
+          if (response != 'undefined' && response != 'null') {
             response = JSON.parse(response);
             let ver = response.version || response.Version;
 
@@ -183,9 +184,9 @@
               return response
             }
           }
-            return false
-         }
-  
+          return false
+        }
+
         function formatData(d) {
           if (!d) return false
           let data = {
@@ -199,13 +200,18 @@
         }
   
         function update(id, v) {
-          const d = formatData(API(id, v))
-          
-          if (d.depict === null) {
-            d.depict = `https://routinehub.co/shortcut/${id}/`
+          if (id == null || v == null) {
+            return ''
           }
+          const d = formatData(API(id, v))
           console.log(d)
-          if (!d) return '';
+          if (!d) return ''
+
+          let iframe = ''
+          if (d.depict != null) {
+            iframe =  `<iframe id="iframe" width="90%" height="540" border="none" src="${d.depict}" sandbox></iframe>`
+          } else iframe = `<iframe id="iframe" hidden></iframe>`
+
           return `
   <div>
     <center style="width:100%;">
@@ -238,7 +244,9 @@
         </h2>
         <hr class='animate' />
         <br />
-        <iframe width="90%" height="540" border="none" src="${d.depict}" sandbox></iframe> 
+          <div id="depict">
+            ${iframe}
+          </div>
         <table>
           <tr>
             <td></td>
@@ -254,6 +262,7 @@
     </center>
   </div>`
         }
+
         const div = document.createElement('div')
                // Testing RoutineHub
         // div.innerHTML = update('10547', '1')
