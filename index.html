@@ -99,6 +99,17 @@
       h1 {font-size:2em; color:var(--title)} 
       h2 {font-size:1.5em;}
       h3 {font-size:1em;} 
+      
+      h1.title, h2.title {
+        margin-top: 1ex;
+        margin-bottom: 1ex;
+        padding: 0;
+      }
+      h2.subtitle {
+        margin-top: 0;
+        margin-bottom: 1ex;
+        padding-top: auto;
+      }
 
 /*. CSS Animations. */
       hr {
@@ -217,17 +228,18 @@
     <center style="width:100%;">
       <div style="max-width:480px;">
         <hr class='animate' />
-        <h1>
+        <h1 class="title">
           An Update Is Available
         </h1>
          <!-- <img class="icon" src="${d.icon}" /> -->
-        <br />
         <h2 style="letter-spacing:0.2ex;font-style:normal;">
-          <span>
+          <span class="title">
             ${d.name} 
           </span>
+        </h2>
+        <h2>
           <br />
-          <span>
+          <span class="subtitle">
               v${v} → v${d.version}
           </span>
         </h2>
@@ -236,8 +248,7 @@
           ${d.notes}
         </h3>
         <br />
-        <br />
-        <h2>
+        <h2 class="title">
           <a onclick="window.open('${d.link}');window.close()">
             Click [Here] To REPLACE
           </a>
