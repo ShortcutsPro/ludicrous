@@ -6,16 +6,16 @@
 //
 //
 // Get input via URL search parameters
-  const Q = new URL(window.location.href).searchParams;
+  const Q = new URL(window.location.href).searchParams
 
 
 // If id contains hyphens, return url to ShortcutsPro repo, else return RoutinfHub API 
   function parseId(id) {
     let url = '';
     if (id.split('-')[1] != undefined) {
-      url = 'https://Cutz.Bustl.io/library/versions/latest/'+id+'.json';
+      url = 'https://Cutz.Bustl.io/library/versions/latest/'+id+'.json'
     } else {
-      url = 'https://RoutineHub.co/api/v1/shortcuts/'+id+'/versions/latest';
+      url = 'https://RoutineHub.co/api/v1/shortcuts/'+id+'/versions/latest'
     }
     console.log(url)
     return url
@@ -32,9 +32,9 @@
 //    console.log(response)
 
     if (response != 'undefined' && response != 'null') {
-      response = JSON.parse(response);
+      response = JSON.parse(response)
       let ver = response.version || response.Version;
-      if (v != ver) return response.link || response.URL;
+      if (v != ver) return response.link || response.URL
     }
     return false
   }
@@ -55,13 +55,13 @@
 
 
 // Testing RoutineHub
-  const body = update('10547', '1')
+//  const body = update('10547', '1')
 
 // Testing Bustl.Cutz
 //  const body = update('E6CE9CFC-B0AE-4B8B-9810-6229C86B3EF5', '3.14')
 
 // Update check input via URL params.
-//  const body = update(Q.get('id'), Q.get('v'))
+  const body = update(Q.get('id'), Q.get('v'))
 
   console.log(body)
   document.write(body)
