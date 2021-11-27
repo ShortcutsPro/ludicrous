@@ -33,6 +33,8 @@
 
     if (response != 'undefined' && response != 'null') {
       response = JSON.parse(response)
+
+//      console.log(JSON.stringify(response))
       let ver = response.version || response.Version;
       if (v != ver) return response.link || response.URL
     }
@@ -42,7 +44,7 @@
 
 // Primary update call returnsa blank page if either id or version parameter is missing or if version is the current version.
 
-  function update(id, v, x) {
+  function update(id, v) {
     if (id == null || v == null) return ''
 
     const link = API(id, v)
